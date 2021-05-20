@@ -146,6 +146,17 @@ class Book_Grid_Query extends Book_Reviews_Query {
 			);
 		}
 
+		// Taxonomies
+		foreach ( get_book_taxonomies( array( 'fields' => 'slug' ) ) as $taxonomy_slug ) {
+			if ( ! empty( $atts[ $taxonomy_slug ] ) && 'any' !== $atts[ $taxonomy_slug ] ) {
+				$this->args['tax_query'][] = array(
+					'taxonomy' => sanitize_text_field( $taxonomy_slug ),
+					'field'    => 'id',
+					'terms'    => absint( $atts[ $taxonomy_slug ] )
+				);
+			}
+		}
+
 	}
 
 	/**
